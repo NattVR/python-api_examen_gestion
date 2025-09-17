@@ -1,3 +1,4 @@
+from urllib import request
 from flask import Flask, jsonify, abort
 
 days = [
@@ -8,6 +9,10 @@ days = [
     {"id": 5, "name": "Friday"},
     {"id": 6, "name": "Saturday"},
     {"id": 7, "name": "Sunday"},
+]
+
+names=[
+    {"id": 1, "name": "Alice"},
 ]
 
 app = Flask(__name__)
@@ -35,6 +40,13 @@ def post_days():
 def hello():
     return jsonify({"message": "Hello, World!"})
 
+
+@app.route("/names", methods=["POST"])
+def post_names():
+    name = request.json.get("name")
+    new_name = {"id": len(names) + 1, "name": name}
+    names.append(new_name)
+    return jsonify({"success": True, "name": new_name}), 201
 
 
 if __name__ == "__main__":
